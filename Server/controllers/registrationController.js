@@ -1,5 +1,7 @@
 const userSchema = require("../models/userSchema");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 async function registrationController(req, res, next) {
   try {
@@ -54,6 +56,49 @@ async function registrationController(req, res, next) {
   }
 }
 
+async function signInController(req, res, next) {
+  try {
+    const { email, password } = req.body;
+
+    if (!email) {
+      return res.json({ error: "Email is required" });
+    } else if (!password) {
+      return res.json({ Emailor: "Password is required" });
+    } else {
+      const existingEmail = await userSchema.findOne({ email });
+
+      if (existingEmail) {
+        const passwordMatch = await bcrypt.compareSync(
+          password,
+          existingEmail.password
+        );
+
+        if (!passwordMatch) {
+          return res.json({ error: "Password does not match" });
+        }
+        const token = jwt.sign(
+          { id: existingEmail._id },
+          process.env.JWT_SECRET
+        );
+
+        const { password: pass, ...rest } = existingEmail._doc;
+
+        res
+          .status(200)
+          .cookie("access_token", token, { httpOnly: true })
+          .json(rest);
+      } else {
+        return res.json({ error: "User not found" });
+      }
+    }
+  } catch (error) {
+    console.error("Error in signInController:", error);
+    next(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   registrationController,
+  signInController,
 };
