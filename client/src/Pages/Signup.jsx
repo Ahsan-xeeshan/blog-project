@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import axios from "axios";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
@@ -47,7 +48,7 @@ const Signup = () => {
         <div className="flex-1">
           <Link to="/" className="text-4xl font-bold dark:text-white">
             <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
-              Whistle
+              Xeeshan's
             </span>{" "}
             Blog
           </Link>
