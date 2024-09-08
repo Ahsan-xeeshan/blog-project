@@ -86,7 +86,7 @@ async function signInController(req, res, next) {
         res
           .status(200)
           .cookie("access_token", token, { httpOnly: true })
-          .json(rest);
+          .json({ success: "Sign in successfull", rest });
       } else {
         return res.json({ error: "User not found" });
       }
