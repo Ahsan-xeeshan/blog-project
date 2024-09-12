@@ -20,10 +20,8 @@ const Dashboard = () => {
       <div className="md:w-56">
         <DashSidebar />
       </div>
-      <div>
-        {/* profile... */}
-        {tab === "profile" && <DashProfile />}
-      </div>
+      {/* profile... */}
+      {tab === "profile" && <DashProfile />}
     </div>
   );
 };
