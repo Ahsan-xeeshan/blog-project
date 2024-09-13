@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const authRouter = require("./authentication");
+const userRouter = require("./user");
 
 router.use("/authentication", authRouter);
+router.use("/user", userRouter);
 
 module.exports = router;

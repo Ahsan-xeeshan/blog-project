@@ -43,7 +43,7 @@ const DashProfile = () => {
     //     }
     //   }
     // }
-
+    setImageFileUploadError(null);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, fileName);
