@@ -75,5 +75,18 @@ const updateUserController = async (req, res, next) => {
     next(error); // Pass the error to the error-handling middleware
   }
 };
+const deleteUserController = async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(
+      res.status(403).json({ error: "You are not allowed to delete this user" })
+    );
+  }
+  try {
+    await userSchema.findByIdAndDelete(req.params.userId);
+    res.status(200).json("User has been deleted");
+  } catch (error) {
+    next(error);
+  }
+};
 
-module.exports = { updateUserController };
+module.exports = { updateUserController, deleteUserController };
