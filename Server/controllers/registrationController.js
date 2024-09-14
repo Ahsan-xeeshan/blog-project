@@ -105,6 +105,7 @@ async function googleAuthController(req, res, next) {
     const user = await userSchema.findOne({ email });
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      console.log(token);
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -124,7 +125,7 @@ async function googleAuthController(req, res, next) {
         profilePicture: googlePhotoURL,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }.process.env.JWT_SECRET);
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
