@@ -77,7 +77,7 @@ async function signInController(req, res, next) {
           return res.json({ error: "Password does not match" });
         }
         const token = jwt.sign(
-          { id: existingEmail._id },
+          { id: existingEmail._id, isAdmin: existingEmail.isAdmin },
           process.env.JWT_SECRET
         );
 
@@ -125,7 +125,10 @@ async function googleAuthController(req, res, next) {
         profilePicture: googlePhotoURL,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.JWT_SECRET
+      );
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
