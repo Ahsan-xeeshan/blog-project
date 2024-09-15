@@ -63,7 +63,7 @@ async function signInController(req, res, next) {
     if (!email) {
       return res.json({ error: "Email is required" });
     } else if (!password) {
-      return res.json({ Emailor: "Password is required" });
+      return res.json({ error: "Password is required" });
     } else {
       const existingEmail = await userSchema.findOne({ email });
 
