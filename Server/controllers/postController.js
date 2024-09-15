@@ -1,6 +1,8 @@
 const postSchema = require("../models/postSchema");
+
 const createPostController = async (req, res, next) => {
-  if (!req.body.isAdmin) {
+  console.log(req.user.isAdmin);
+  if (!req.user) {
     return next(
       res.status(403).json({ error: "You are not allowed to create a post." })
     );
