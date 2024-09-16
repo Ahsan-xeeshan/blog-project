@@ -1,8 +1,6 @@
 const postSchema = require("../models/postSchema");
-const { post } = require("../routes/api/post");
 
 const createPostController = async (req, res, next) => {
-  console.log(req.user.isAdmin);
   if (!req.user) {
     return next(
       res.status(403).json({ error: "You are not allowed to create a post." })
@@ -72,7 +70,53 @@ const getPostsController = async (req, res, next) => {
   }
 };
 
+const deletePostController = async (req, res, next) => {
+  if (!req.user || req.user.id !== req.params.userId) {
+    return next(
+      res
+        .status(403)
+        .json({ error: "You are not allowed to delete this post." })
+    );
+  }
+  try {
+    await postSchema.findByIdAndDelete(req.params.postId);
+    res.status(200).json("The post has been deleted.");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updatePostController = async (req, res, next) => {
+  console.log(req.params.postId);
+  if (!req.user || req.user.id !== req.params.userId) {
+    return next(
+      res
+        .status(403)
+        .json({ error: "You are not allowed to update this post." })
+    );
+  }
+  try {
+    const updatedPost = await postSchema.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createPostController,
   getPostsController,
+  deletePostController,
+  updatePostController,
 };
