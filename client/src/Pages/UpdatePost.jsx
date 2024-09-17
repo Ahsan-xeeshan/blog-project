@@ -25,15 +25,12 @@ const UpdatePost = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
 
-  console.log(postId);
-
   useEffect(() => {
     try {
       const fetchPost = async () => {
         const response = await fetch(`/api/v1/post/getposts?postId=${postId}`);
-        console.log(response);
         const data = await response.json();
-        console.log(data);
+        console.log(data.posts);
         if (response.status === 200) {
           setPublishError(null);
           setFormData(data.posts[0]);
@@ -47,6 +44,7 @@ const UpdatePost = () => {
       console.log(error.message);
     }
   }, [postId]);
+  console.log(formData);
 
   const handleUpload = async () => {
     try {
