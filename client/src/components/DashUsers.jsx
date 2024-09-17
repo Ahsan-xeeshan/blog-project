@@ -31,7 +31,7 @@ const DashUsers = () => {
     if (currentUser.isAdmin) {
       fetchUsers();
     }
-  }, [currentUser._id]);
+  }, [users]);
 
   const handleShowMore = async () => {
     const startIndex = users.length;
@@ -54,7 +54,7 @@ const DashUsers = () => {
     setShowModal(false);
     try {
       const response = await axios.delete(
-        `api/v1/user/deleteuser/${userIdToDelete}/${currentUser._id}`
+        `api/v1/user/delete/${userIdToDelete}`
       );
       if (response.status === 200) {
         setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));

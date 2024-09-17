@@ -77,7 +77,7 @@ const updateUserController = async (req, res, next) => {
 };
 
 const deleteUserController = async (req, res, next) => {
-  if (req.user.id !== req.params.userId) {
+  if (!req.user && req.user.id !== req.params.userId) {
     return next(
       res.status(403).json({ error: "You are not allowed to delete this user" })
     );
