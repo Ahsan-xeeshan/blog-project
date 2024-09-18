@@ -9,6 +9,7 @@ import FooterCom from "./components/Footer";
 import Header from "./components/Header";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute copy";
 import PrivateRoute from "./components/PrivateRoute";
+import ScrollToTop from "./components/ScrollToTop";
 import CreatePost from "./Pages/CreatePost";
 import PostPage from "./Pages/PostPage";
 import UpdatePost from "./Pages/UpdatePost";
@@ -17,6 +18,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop />
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
