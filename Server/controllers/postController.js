@@ -96,6 +96,11 @@ const updatePostController = async (req, res, next) => {
     );
   }
   try {
+    const slug = req.body.title
+      .split(" ")
+      .join("-")
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9-]/g, "-");
     const updatedPost = await postSchema.findByIdAndUpdate(
       req.params.postId,
       {
@@ -104,6 +109,7 @@ const updatePostController = async (req, res, next) => {
           content: req.body.content,
           category: req.body.category,
           image: req.body.image,
+          slug,
         },
       },
       { new: true }
