@@ -141,9 +141,24 @@ const getAllUsersController = async (req, res, next) => {
   }
 };
 
+const getUserController = async (req, res, next) => {
+  try {
+    const user = await userSchema.findById(req.params.userId);
+
+    if (!user) {
+      return next(res.status(403).json({ error: "User not found!" }));
+    }
+    const { password, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   updateUserController,
   deleteUserController,
   signOutController,
   getAllUsersController,
+  getUserController,
 };

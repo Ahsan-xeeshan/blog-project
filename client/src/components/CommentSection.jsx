@@ -1,9 +1,11 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+
 import axios from "axios";
 import { Alert, Button, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Comment from "./Comment";
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
@@ -24,12 +26,28 @@ const CommentSection = ({ postId }) => {
       if (response.status === 200) {
         setComment("");
         setCommentError(null);
+        setComments([response.data, ...comments]);
       }
     } catch (error) {
       setCommentError(error.message);
     }
   };
 
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axios.get(
+          `/api/v1/comment/get-all-comments/${postId}`
+        );
+        if (response.status === 200) {
+          setComments(response.data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getComments();
+  }, [postId]);
   return (
     <div className="max--w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -82,6 +100,23 @@ const CommentSection = ({ postId }) => {
             </Alert>
           )}
         </form>
+      )}
+      {comments.length === 0 ? (
+        <div>
+          <p className="text-sm my-5">No comments yet</p>
+        </div>
+      ) : (
+        <>
+          <div className="text-sm my-5 flex items-center gap-1">
+            <p>Comments</p>
+            <div className="border border-gray-400 px-2 py-1 rounded-sm">
+              <p>{comments.length}</p>
+            </div>
+          </div>
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
+        </>
       )}
     </div>
   );
