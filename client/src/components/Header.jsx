@@ -16,7 +16,7 @@ const Header = () => {
 
   const handleSignOut = async () => {
     try {
-      const response = await axios.post("api/v1/user/signout");
+      const response = await axios.post("/api/v1/user/signout");
       if (response.data.error) {
         console.log(response.data.error);
       } else {
