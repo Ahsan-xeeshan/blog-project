@@ -5,6 +5,7 @@ const {
   likeCommentController,
   editCommentController,
   deleteCommentController,
+  getCommentsController,
 } = require("../../controllers/commentcontroller");
 const { verifyToken } = require("../../utils/verifyUser");
 const router = express.Router();
@@ -18,5 +19,5 @@ router.delete(
   verifyToken,
   deleteCommentController
 );
-
+router.get("/getcomments", verifyToken, getCommentsController);
 module.exports = router;
