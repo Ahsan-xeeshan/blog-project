@@ -56,8 +56,37 @@ const likeCommentController = async (req, res, next) => {
   }
 };
 
+const editCommentController = async (req, res, next) => {
+  try {
+    const comment = await commentSchema.findById(req.params.commentId);
+    console.log(req.body.content);
+    if (!comment) {
+      return next(res.status(404).json({ error: "Comment not found" }));
+    }
+    if (comment.userId !== req.user.id && !req.user) {
+      if (!comment) {
+        return next(
+          res
+            .status(403)
+            .json({ error: "You are not allowed to edit this comment" })
+        );
+      }
+    }
+    const editedComment = await commentSchema.findByIdAndUpdate(
+      req.params.commentId,
+      { content: req.body.content },
+      { new: true }
+    );
+
+    res.status(200).json(editedComment);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createCommentController,
   getAllCommentsController,
   likeCommentController,
+  editCommentController,
 };
