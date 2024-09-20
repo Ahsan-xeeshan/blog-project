@@ -59,7 +59,7 @@ const likeCommentController = async (req, res, next) => {
 const editCommentController = async (req, res, next) => {
   try {
     const comment = await commentSchema.findById(req.params.commentId);
-    console.log(req.body.content);
+
     if (!comment) {
       return next(res.status(404).json({ error: "Comment not found" }));
     }
@@ -84,9 +84,30 @@ const editCommentController = async (req, res, next) => {
   }
 };
 
+const deleteCommentController = async (req, res, next) => {
+  try {
+    const comment = await commentSchema.findById(req.params.commentId);
+    if (!comment) {
+      return next(res.status(404).json({ error: "Comment not found" }));
+    }
+    if (comment.userId !== req.user.id && !req.user) {
+      return next(
+        res
+          .status(403)
+          .json({ error: "You are not allowed to delete this comment" })
+      );
+    }
+    await commentSchema.findByIdAndDelete(req.params.commentId);
+    res.status(200).json(`Comment has been deleted`);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createCommentController,
   getAllCommentsController,
   likeCommentController,
   editCommentController,
+  deleteCommentController,
 };
