@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const userSchema = require("../models/userSchema");
 
 const updateUserController = async (req, res, next) => {
-  console.log(req.user.id);
   if (req.user.id !== req.params.userId) {
     return next(
       res.status(403).json({ error: "You are not allowed to update this user" })
@@ -144,7 +143,6 @@ const getAllUsersController = async (req, res, next) => {
 const getUserController = async (req, res, next) => {
   try {
     const user = await userSchema.findById(req.params.userId);
-
     if (!user) {
       return next(res.status(403).json({ error: "User not found!" }));
     }

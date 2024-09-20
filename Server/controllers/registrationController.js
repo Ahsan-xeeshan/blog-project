@@ -105,7 +105,6 @@ async function googleAuthController(req, res, next) {
     const user = await userSchema.findOne({ email });
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-      console.log(token);
       const { password, ...rest } = user._doc;
       res
         .status(200)

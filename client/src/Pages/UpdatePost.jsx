@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import axios from "axios";
 import {
   getDownloadURL,
   getStorage,
@@ -28,15 +29,15 @@ const UpdatePost = () => {
   useEffect(() => {
     try {
       const fetchPost = async () => {
-        const response = await fetch(`/api/v1/post/getposts?postId=${postId}`);
-        const data = await response.json();
-        console.log(data.posts);
+        const response = await axios.get(
+          `/api/v1/post/getposts?postId=${postId}`
+        );
         if (response.status === 200) {
           setPublishError(null);
-          setFormData(data.posts[0]);
+          setFormData(response.data.posts[0]);
         } else {
-          console.log(data.message);
-          setPublishError(data.message);
+          console.log(response.data.message);
+          setPublishError(response.data.message);
         }
       };
       fetchPost();
@@ -86,24 +87,17 @@ const UpdatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
+      const response = await axios.put(
         `/api/v1/post/updatepost/${formData._id}/${currentUser._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+        formData
       );
-      const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
-        setPublishError(data.error);
+        setPublishError(response.data.error);
       }
       if (response.status === 200) {
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        navigate(`/post/${response.data.slug}`);
       }
     } catch (error) {
       setPublishError("Something went wrong");
@@ -175,11 +169,16 @@ const UpdatePost = () => {
 
         <ReactQuill
           theme="snow"
+          value={formData.content}
           placeholder="Write something..."
           className="h-72 mb-12"
-          value={formData.content}
           required
-          onChange={(value) => setFormData({ ...formData, content: value })}
+          onChange={(value) => {
+            setFormData((prevState) => ({
+              ...prevState,
+              content: value,
+            }));
+          }}
         />
         <Button type="submit" gradientDuoTone="purpleToPink">
           Update Post

@@ -87,7 +87,6 @@ const deletePostController = async (req, res, next) => {
 };
 
 const updatePostController = async (req, res, next) => {
-  console.log(req.params.postId);
   if (!req.user || req.user.id !== req.params.userId) {
     return next(
       res
