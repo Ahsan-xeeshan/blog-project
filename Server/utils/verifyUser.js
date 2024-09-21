@@ -1,9 +1,6 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  // Log the cookies to check if they are available
-  console.log(req.cookies.access_token);
-
   // Extract the token from the cookies
   const token = req.cookies?.access_token; // Optional chaining to avoid errors
 
@@ -18,7 +15,6 @@ const verifyToken = (req, res, next) => {
 
     // Attach the user to the request object
     req.user = user;
-    console.log(req.user);
 
     // Proceed to the next middleware or route handler
     next();
