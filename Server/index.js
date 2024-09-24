@@ -6,8 +6,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 const path = require("path");
-
-const path_name = path.resolve();
+const paht_name = path.resolve();
 
 app.use(cors());
 
@@ -17,11 +16,10 @@ app.use(cookieParser());
 
 app.use(route);
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
+app.use(express.static(path.join(path_name, "/client/dist")));
 
 app.get("*", (req, res) => {
-  console.log(path.join(path_name, "client", "dist", "index.html"));
-  res.sendFile(path.resolve("/opt/render/project/src/client/dist/index.html"));
+  res.sendFile(path.join(paht_name, "client", "dist", "index.html"));
 });
 
 dbConnection();
