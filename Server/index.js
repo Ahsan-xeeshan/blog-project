@@ -7,6 +7,8 @@ const app = express();
 const port = 3000;
 const path = require("path");
 
+const path_name = path.resolve();
+
 app.use(cors());
 
 app.use(express.json());
@@ -18,7 +20,7 @@ app.use(route);
 app.use(express.static(path.join(__dirname, "/client/dist")));
 
 app.get("*", (req, res) => {
-  console.log(path.join(__dirname, "client", "dist", "index.html"));
+  console.log(path.join(path_name, "client", "dist", "index.html"));
   res.sendFile(path.resolve("/opt/render/project/src/client/dist/index.html"));
 });
 
