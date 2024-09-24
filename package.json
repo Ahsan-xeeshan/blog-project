@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon Server/index.js",
     "start": "node Server/index.js",
-    "develop": "concurrently \"cd Server && npm run watch\" \"cd client && npm run dev\"",
-    "install": "cd Server && npm i && cd ../client && npm i --production=false",
-    "build": "cd client && npm run build",
-    "render-build": "npm install && npm run build"
+    "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",
