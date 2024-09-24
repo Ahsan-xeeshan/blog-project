@@ -18,7 +18,8 @@ app.use(route);
 app.use(express.static(path.join(__dirname, "/client/dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  console.log(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.resolve("/opt/render/project/src/client/dist/index.html"));
 });
 
 dbConnection();
