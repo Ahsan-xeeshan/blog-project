@@ -60,7 +60,7 @@ const DashProfile = () => {
     //     match /{allPaths=**} {
     //       allow read;
     //       allow write: if
-    //       request.resource.size < 2 * 1024 * 1024 &&
+    //       request.resource.size < 5 * 1024 * 1024 &&
     //       request.resource.contentType.matches('image/.*')
     //     }
     //   }
@@ -81,7 +81,7 @@ const DashProfile = () => {
 
       (error) => {
         setImageFileUploadError(
-          "Could not upload image(File must be less than 2MB)"
+          "Could not upload image(File must be less than 5MB)"
         );
         setImageFileUploadProgress(null);
         setImageFile(null);
@@ -105,6 +105,7 @@ const DashProfile = () => {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
+    setImageFileUploadProgress(null);
     if (Object.keys(formData).length === 0) {
       setUpdateUserError("No changes made.");
       return;
@@ -123,7 +124,7 @@ const DashProfile = () => {
       if (response.data.error) {
         dispatch(updateFailure(response.data.error));
         console.log(response.data.error);
-        setUpdateUserError(response.data.error);
+        setUpdateUserError(response.data.message);
       } else {
         dispatch(updateSuccess(response.data));
         setUpdateUserSuccess("User's profile update successfully.");
