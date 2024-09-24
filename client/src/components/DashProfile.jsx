@@ -105,7 +105,7 @@ const DashProfile = () => {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
-    setImageFileUploadProgress(null);
+
     if (Object.keys(formData).length === 0) {
       setUpdateUserError("No changes made.");
       return;
@@ -127,6 +127,7 @@ const DashProfile = () => {
         setUpdateUserError(response.data.message);
       } else {
         dispatch(updateSuccess(response.data));
+        setImageFileUploadProgress(null);
         setUpdateUserSuccess("User's profile update successfully.");
       }
     } catch (error) {
